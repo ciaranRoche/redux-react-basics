@@ -32,21 +32,37 @@
 
 import { createStore } from 'redux';
 
-//reducer passed to create store
-const reducer = (state, action) => {
+//stores initial state and makes copies for all new state
+const initialState = {
+    result: 1,
+    lastValues: []
+}
+
+//reducer passed to create store and handles initialization of the state
+const reducer = (state = initialState, action) => {
     switch (action.type){
         case "ADD" : 
-            state = state + action.payload;
+            state = {
+                //spread operator get old props from state
+                ...state,
+                result: state.result + action.payload,
+                lastValues: [...state.lastValues, action.payload]
+            };
+            
             break;
         case "SUBTRACT":
-            state = state - action.payload;
+            state = {
+                ...state,
+                result: state.result - action.payload,
+                lastValues: [...state.lastValues, action.payload]
+            }
             break;
     }
     return state;
 };
 
-//store takes in reducer function and a prop
-const store = createStore(reducer, 1);
+//store takes in reducer function
+const store = createStore(reducer);
 
 //subscribe triggers when reducer is fired
 store.subscribe(() => {
@@ -64,7 +80,7 @@ store.dispatch({
 });
 store.dispatch({
     type: "SUBTRACT",
-    payload: 22
+    payload: 32
 });
 
 
