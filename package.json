@@ -11,7 +11,7 @@
   "keywords": [
     "reactjs"
   ],
-  "author": "Maximilian Schwarzmueller",
+  "author": "Ciaran Roche",
   "license": "MIT",
   "dependencies": {
     "react": "^15.2.1",
