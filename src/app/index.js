@@ -30,16 +30,14 @@
 
 // render(<App />, window.document.getElementById('app'));
 
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
-//stores initial state and makes copies for all new state
-const initialState = {
-    result: 1,
-    lastValues: []
-}
 
 //reducer passed to create store and handles initialization of the state
-const reducer = (state = initialState, action) => {
+const mathReducer = (state = {
+        result: 1,
+        lastValues: []
+    }, action) => {
     switch (action.type){
         case "ADD" : 
             state = {
@@ -61,8 +59,31 @@ const reducer = (state = initialState, action) => {
     return state;
 };
 
-//store takes in reducer function
-const store = createStore(reducer);
+//reducer passed to create store and handles initialization of the state
+const userReducer = (state = {
+        name: 'Ciaran',
+        age: 29
+    }, action) => {
+    switch (action.type){
+        case "SET_NAME" : 
+            state = {
+                //spread operator get old props from state
+                ...state,
+                name: action.payload
+            };
+            break;
+        case "SET_AGE":
+            state = {
+                ...state,
+                age: action.payload   
+            };
+            break;
+    }
+    return state;
+};
+
+//store takes in reducer function, combineReducer function takes in names of reducers and es6 sets up the key value pairs for you 
+const store = createStore(combineReducers({mathReducer, userReducer}));
 
 //subscribe triggers when reducer is fired
 store.subscribe(() => {
@@ -82,5 +103,13 @@ store.dispatch({
     type: "SUBTRACT",
     payload: 32
 });
+store.dispatch({
+    type: "SET_NAME",
+    payload: "Roche"
+})
+store.dispatch({
+    type: "SET_AGE",
+    payload: 30
+})
 
 
